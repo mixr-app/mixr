@@ -20,14 +20,7 @@ public class CustomUserDetails implements UserDetails {
         this.authorities = authorities.stream()
                 .map(str -> new SimpleGrantedAuthority(str))
                 .collect(Collectors.toList());
-//        if (username.toLowerCase().contains("admin")){
-//            this.password = "admin";
-//            authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-//            System.out.println(authorities);
-//        }
-//        else {
-//            this.password = "password";
-//        }
+
     }
 
     @Override

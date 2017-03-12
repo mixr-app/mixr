@@ -24,3 +24,106 @@ insert into users (username, password, admin, enabled, created_on) values ("max"
 insert into users (username, password, admin, enabled, created_on) values ("welby", "$2a$06$r1jxFWhkm8XoFwiQomqATuOjWsXYSNCJkbusiKgOOdTmaWaBeM5qK", true, true, now());
 insert into users (username, password, admin, enabled, created_on) values ("user", "$2a$06$r1jxFWhkm8XoFwiQomqATuOjWsXYSNCJkbusiKgOOdTmaWaBeM5qK", false, true, now());
 select * from users;
+
+CREATE TABLE ingredients(
+   id serial,
+   name varchar(100),
+   description varchar(500),
+   type enum('liquor', 'mixer', 'other', 'tool'),
+   
+   created_on datetime not null,
+   updated_on datetime,
+   created_by varchar(32) not null,
+   updated_by varchar(32),
+   version bigint not null default 0,
+   PRIMARY KEY( id ),
+   foreign key( created_by ) references users( username ),
+   foreign key( updated_by ) references users( username )
+);
+
+CREATE TABLE sources(
+   id serial,
+   name varchar(100),
+   description varchar(500),
+   
+   created_on datetime not null,
+   updated_on datetime,
+   created_by varchar(32) not null,
+   updated_by varchar(32),
+   version bigint not null default 0,
+   PRIMARY KEY( id ),
+   foreign key( created_by ) references users( username ),
+   foreign key( updated_by ) references users( username )
+);
+
+CREATE TABLE recipes(
+   id serial,
+   name varchar(100),
+   description varchar(500),
+   instructions varchar(500),
+   image_location varchar(100),
+   source bigint unsigned,
+   
+   created_on datetime not null,
+   updated_on datetime,
+   created_by varchar(32) not null,
+   updated_by varchar(32),
+   version bigint not null default 0,
+   PRIMARY KEY( id ),
+   foreign key( source ) references sources( id ),
+   foreign key( created_by ) references users( username ),
+   foreign key( updated_by ) references users( username )
+);
+
+CREATE TABLE recipe_ingredients(
+   id serial,
+   recipe_id bigint unsigned,
+   ingredient_id bigint unsigned,
+   amount float,
+   unit enum('oz', 'mL', 'tsp', 'dash', 'other'),
+   unit_other varchar(32),
+   
+   created_on datetime not null,
+   updated_on datetime,
+   created_by varchar(32) not null,
+   updated_by varchar(32),
+   version bigint not null default 0,
+   PRIMARY KEY( id ),
+   foreign key( recipe_id ) references recipes( id ),
+   foreign key( ingredient_id ) references ingredients( id ),
+   foreign key( created_by ) references users( username ),
+   foreign key( updated_by ) references users( username )
+);
+
+
+CREATE TABLE recipe_ratings(
+   id serial,
+   recipe_id bigint unsigned,
+   rating enum('never drink it again', 'good enough if it\'s free', 'pretty good, no complaints', 'my go-to drink', 'better than sex'),
+   comment varchar(500),
+   
+   created_on datetime not null,
+   updated_on datetime,
+   created_by varchar(32) not null,
+   updated_by varchar(32),
+   version bigint not null default 0,
+   PRIMARY KEY( id ),
+   foreign key( recipe_id ) references recipes( id ),
+   foreign key( created_by ) references users( username ),
+   foreign key( updated_by ) references users( username )
+);
+
+CREATE TABLE pantry(
+   id serial,
+   ingredient_id bigint unsigned,
+   
+   created_on datetime not null,
+   updated_on datetime,
+   created_by varchar(32) not null,
+   updated_by varchar(32),
+   version bigint not null default 0,
+   PRIMARY KEY( id ),
+   foreign key( ingredient_id ) references ingredients( id ),
+   foreign key( created_by ) references users( username ),
+   foreign key( updated_by ) references users( username )
+);
