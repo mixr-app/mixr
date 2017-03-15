@@ -35,7 +35,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth
-                .userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
+                .userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder).and()
+                ;
     }
 
     @Override
@@ -43,10 +44,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         if (csrfEnabled) {
             http
                     .httpBasic().and()
+                    .anonymous().disable()
                     .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
         }
         else {
-            http.httpBasic().and().csrf().disable();
+            http.httpBasic().and()
+                    .anonymous().disable()
+                    .csrf().disable();
         }
     }
 }

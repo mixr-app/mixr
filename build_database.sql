@@ -41,6 +41,9 @@ CREATE TABLE ingredients(
    foreign key( updated_by ) references users( username )
 );
 
+insert into ingredients (name, description, created_on, created_by) values ("null test", "inserted directly into db", now(), "joe");
+select * from ingredients;
+
 CREATE TABLE sources(
    id serial,
    name varchar(100),
