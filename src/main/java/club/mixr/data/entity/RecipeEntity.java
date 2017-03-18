@@ -35,6 +35,30 @@ public class RecipeEntity extends AuditingEntity {
 
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getInstructions() {
+        return instructions;
+    }
+
+    public String getImageLocation() {
+        return imageLocation;
+    }
+
+    public Long getSourceId() {
+        return sourceId;
+    }
+
     public Recipe toRecipe() {
         return new Recipe(id, name, description, instructions, imageLocation, sourceId);
     }

@@ -108,12 +108,13 @@ insert into recipes (name, description, instructions, source, created_on, create
 
 insert into recipes (name, description, instructions, source, created_on, created_by) values (
 	"White Lady", 
-    "An orange martini of sorts.", 
+    "Strong and refreshing", 
     "Mix the rum and the coke, serve on ice", 
     1,
     now(), 
     "joe");
 
+select * from recipes;
 
 CREATE TABLE recipe_ingredients(
    id serial,
@@ -121,7 +122,6 @@ CREATE TABLE recipe_ingredients(
    ingredient_id bigint unsigned,
    amount float,
    unit varchar(256),
-   unit_other varchar(32),
    
    created_on datetime not null,
    updated_on datetime,
@@ -134,6 +134,54 @@ CREATE TABLE recipe_ingredients(
    foreign key( created_by ) references users( username ),
    foreign key( updated_by ) references users( username )
 );
+
+insert into recipe_ingredients (recipe_id, ingredient_id, amount, unit, created_on, created_by) values (
+	1, 
+    1, 
+    1.5, 
+    "oz",
+    now(), 
+    "joe");
+    
+insert into recipe_ingredients (recipe_id, ingredient_id, amount, unit, created_on, created_by) values (
+	1, 
+    6, 
+    4.5, 
+    "oz",
+    now(), 
+    "joe");
+    
+insert into recipe_ingredients (recipe_id, ingredient_id, amount, unit, created_on, created_by) values (
+	2, 
+    2, 
+    8, 
+    "oz",
+    now(), 
+    "joe");
+    
+insert into recipe_ingredients (recipe_id, ingredient_id, amount, unit, created_on, created_by) values (
+	3, 
+    4, 
+    4, 
+    "cl",
+    now(), 
+    "joe");
+    
+insert into recipe_ingredients (recipe_id, ingredient_id, amount, unit, created_on, created_by) values (
+	3, 
+    5, 
+    3, 
+    "cl",
+    now(), 
+    "joe");
+    
+insert into recipe_ingredients (recipe_id, ingredient_id, amount, unit, created_on, created_by) values (
+	3, 
+    7, 
+    2, 
+    "cl",
+    now(), 
+    "joe");
 
 
 CREATE TABLE recipe_ratings(

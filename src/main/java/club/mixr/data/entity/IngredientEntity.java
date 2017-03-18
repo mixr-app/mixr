@@ -29,6 +29,22 @@ public class IngredientEntity extends AuditingEntity {
 
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public IngredientType getIngredientType() {
+        return ingredientType;
+    }
+
     public IngredientEntity(String name, String description) {
         super();
         this.name = name;

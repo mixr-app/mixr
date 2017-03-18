@@ -7,10 +7,7 @@ import club.mixr.service.RecipeService;
 import club.mixr.service.SourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,8 +19,12 @@ public class RecipeController {
     RecipeService recipeService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public List<Recipe> allRecipes() {
-        return recipeService.allRecipes();
+    public List<Recipe> allRecipes(
+            @RequestParam(value = "ids", required = false) List<Long> ids,
+            @RequestParam(value = "threshold", defaultValue = "0") int threshold) {
+
+        return (ids == null) ? recipeService.allRecipes()
+                : recipeService.findAllRecipesByIngredientIds(ids, threshold);
     }
 
 //    @PreAuthorize("isAuthenticated()")
