@@ -27,9 +27,9 @@ select * from users;
 
 CREATE TABLE ingredients(
    id serial,
-   name varchar(100),
+   name varchar(100) unique,
    description varchar(500),
-   type enum('liquor', 'mixer', 'other', 'tool'),
+   type varchar(255),
    
    created_on datetime not null,
    updated_on datetime,
@@ -41,12 +41,22 @@ CREATE TABLE ingredients(
    foreign key( updated_by ) references users( username )
 );
 
-insert into ingredients (name, description, created_on, created_by) values ("null test", "inserted directly into db", now(), "joe");
+insert into ingredients (name, description, type, created_on, created_by) values ("Rum, clear", "Rum that's clear", 'LIQUOR', now(), "joe");
+insert into ingredients (name, description, type, created_on, created_by) values ("Vodka", "Vodka is pretty interchangable", 'LIQUOR', now(), "joe");
+insert into ingredients (name, description, type, created_on, created_by) values ("Tequila", "Need to break this into different types", 'LIQUOR', now(), "joe");
+insert into ingredients (name, description, type, created_on, created_by) values ("Gin", "Tastes like Christmas", 'LIQUOR', now(), "joe");
+insert into ingredients (name, description, type, created_on, created_by) values ("Triple Sec", "An orange-flavored liqueur", 'LIQUOR', now(), "joe");
+
+
+insert into ingredients (name, description, type, created_on, created_by) values ("Cola", "Any brand will do.  Choose diet for a lower calorie drink", 'MIXER', now(), "joe");
+insert into ingredients (name, description, type, created_on, created_by) values ("Lemon Juice", "Fresh-squeezed is much better but a lot of work", 'MIXER', now(), "joe");
+insert into ingredients (name, description, type, created_on, created_by) values ("Simple Syrup", "You can make this by desolving sugar into hot water on the stovetop in a 1:1 ratio", 'MIXER', now(), "joe");
+
 select * from ingredients;
 
 CREATE TABLE sources(
    id serial,
-   name varchar(100),
+   name varchar(100) unique,
    description varchar(500),
    
    created_on datetime not null,
@@ -59,9 +69,11 @@ CREATE TABLE sources(
    foreign key( updated_by ) references users( username )
 );
 
+insert into sources (id, name, description, created_on, created_by) values (1, "IBA Official Cocktail", "The International Bartender's Association recognizes these cocktails and uses them to judge some competition or something.", now(), "joe");
+
 CREATE TABLE recipes(
    id serial,
-   name varchar(100),
+   name varchar(100) unique,
    description varchar(500),
    instructions varchar(500),
    image_location varchar(100),
@@ -78,12 +90,37 @@ CREATE TABLE recipes(
    foreign key( updated_by ) references users( username )
 );
 
+insert into recipes (name, description, instructions, source, created_on, created_by) values (
+	"Rum and Coke", 
+    "One of the easiest things to make.", 
+    "Mix the rum and the coke, serve on ice", 
+    1,
+    now(), 
+    "joe");
+    
+insert into recipes (name, description, instructions, source, created_on, created_by) values (
+	"What I Drank in College", 
+    "Cheers!", 
+    "It's just vodka, serve chilled if feeling adventerous.", 
+    1,
+    now(), 
+    "joe");
+
+insert into recipes (name, description, instructions, source, created_on, created_by) values (
+	"White Lady", 
+    "An orange martini of sorts.", 
+    "Mix the rum and the coke, serve on ice", 
+    1,
+    now(), 
+    "joe");
+
+
 CREATE TABLE recipe_ingredients(
    id serial,
    recipe_id bigint unsigned,
    ingredient_id bigint unsigned,
    amount float,
-   unit enum('oz', 'mL', 'tsp', 'dash', 'other'),
+   unit varchar(256),
    unit_other varchar(32),
    
    created_on datetime not null,
@@ -102,7 +139,7 @@ CREATE TABLE recipe_ingredients(
 CREATE TABLE recipe_ratings(
    id serial,
    recipe_id bigint unsigned,
-   rating enum('never drink it again', 'good enough if it\'s free', 'pretty good, no complaints', 'my go-to drink', 'better than sex'),
+   rating varchar(255),
    comment varchar(500),
    
    created_on datetime not null,

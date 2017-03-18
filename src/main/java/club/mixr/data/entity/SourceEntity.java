@@ -1,16 +1,17 @@
 package club.mixr.data.entity;
 
-import javax.persistence.*;
-
 import club.mixr.dto.Ingredient;
+import club.mixr.dto.Source;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
- 
+import javax.persistence.*;
+
+
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "ingredients")
-public class IngredientEntity extends AuditingEntity {
- 
+@Table(name = "sources")
+public class SourceEntity extends AuditingEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,21 +22,17 @@ public class IngredientEntity extends AuditingEntity {
     @Column(name = "description", length = 500)
     private String description;
 
-    @Column(name="type")
-    @Enumerated(EnumType.STRING)
-    private IngredientType ingredientType;
-
-    public IngredientEntity() {
+    public SourceEntity() {
 
     }
 
-    public IngredientEntity(String name, String description) {
+    public SourceEntity(String name, String description) {
         super();
         this.name = name;
         this.description = description;
     }
 
-    public Ingredient toIngredient(){
-        return new Ingredient(id, name, description, ingredientType);
+    public Source toSource(){
+        return new Source(id, name, description);
     }
 }

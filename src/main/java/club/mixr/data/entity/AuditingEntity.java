@@ -30,6 +30,9 @@ public abstract class AuditingEntity {
     @LastModifiedBy
     private String updatedBy;
 
+    @Version
+    private long version;
+
 //    @JoinColumn(name = "created_by", referencedColumnName="username")
 //    @ManyToOne( cascade = {CascadeType.PERSIST, CascadeType.MERGE} )
 //    @CreatedBy
