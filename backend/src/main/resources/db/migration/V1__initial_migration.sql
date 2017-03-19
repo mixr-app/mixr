@@ -1,11 +1,3 @@
--- I'll let Max set up flyway for us, it's far too complicated for me.  Until then, we'll just run this fancy sql script to keep our database up-to-date!
-
-drop database if exists mixr;
-create database mixr;
-
-use mixr;
-
-
 create table users(
 	username varchar(32),
 	password char(60) not null,
@@ -30,7 +22,7 @@ CREATE TABLE ingredients(
    name varchar(100) unique,
    description varchar(500),
    type varchar(255),
-   
+
    created_on datetime not null,
    updated_on datetime,
    created_by varchar(32) not null,
@@ -58,7 +50,7 @@ CREATE TABLE sources(
    id serial,
    name varchar(100) unique,
    description varchar(500),
-   
+
    created_on datetime not null,
    updated_on datetime,
    created_by varchar(32) not null,
@@ -78,7 +70,7 @@ CREATE TABLE recipes(
    instructions varchar(500),
    image_location varchar(100),
    source bigint unsigned,
-   
+
    created_on datetime not null,
    updated_on datetime,
    created_by varchar(32) not null,
@@ -91,27 +83,27 @@ CREATE TABLE recipes(
 );
 
 insert into recipes (name, description, instructions, source, created_on, created_by) values (
-	"Rum and Coke", 
-    "One of the easiest things to make.", 
-    "Mix the rum and the coke, serve on ice", 
+	"Rum and Coke",
+    "One of the easiest things to make.",
+    "Mix the rum and the coke, serve on ice",
     1,
-    now(), 
-    "joe");
-    
-insert into recipes (name, description, instructions, source, created_on, created_by) values (
-	"What I Drank in College", 
-    "Cheers!", 
-    "It's just vodka, serve chilled if feeling adventerous.", 
-    1,
-    now(), 
+    now(),
     "joe");
 
 insert into recipes (name, description, instructions, source, created_on, created_by) values (
-	"White Lady", 
-    "Strong and refreshing", 
-    "Mix the rum and the coke, serve on ice", 
+	"What I Drank in College",
+    "Cheers!",
+    "It's just vodka, serve chilled if feeling adventerous.",
     1,
-    now(), 
+    now(),
+    "joe");
+
+insert into recipes (name, description, instructions, source, created_on, created_by) values (
+	"White Lady",
+    "Strong and refreshing",
+    "Mix the rum and the coke, serve on ice",
+    1,
+    now(),
     "joe");
 
 select * from recipes;
@@ -122,7 +114,7 @@ CREATE TABLE recipe_ingredients(
    ingredient_id bigint unsigned,
    amount float,
    unit varchar(256),
-   
+
    created_on datetime not null,
    updated_on datetime,
    created_by varchar(32) not null,
@@ -136,51 +128,51 @@ CREATE TABLE recipe_ingredients(
 );
 
 insert into recipe_ingredients (recipe_id, ingredient_id, amount, unit, created_on, created_by) values (
-	1, 
-    1, 
-    1.5, 
+	1,
+    1,
+    1.5,
     "oz",
-    now(), 
+    now(),
     "joe");
-    
+
 insert into recipe_ingredients (recipe_id, ingredient_id, amount, unit, created_on, created_by) values (
-	1, 
-    6, 
-    4.5, 
+	1,
+    6,
+    4.5,
     "oz",
-    now(), 
+    now(),
     "joe");
-    
+
 insert into recipe_ingredients (recipe_id, ingredient_id, amount, unit, created_on, created_by) values (
-	2, 
-    2, 
-    8, 
+	2,
+    2,
+    8,
     "oz",
-    now(), 
+    now(),
     "joe");
-    
+
 insert into recipe_ingredients (recipe_id, ingredient_id, amount, unit, created_on, created_by) values (
-	3, 
-    4, 
-    4, 
+	3,
+    4,
+    4,
     "cl",
-    now(), 
+    now(),
     "joe");
-    
+
 insert into recipe_ingredients (recipe_id, ingredient_id, amount, unit, created_on, created_by) values (
-	3, 
-    5, 
-    3, 
+	3,
+    5,
+    3,
     "cl",
-    now(), 
+    now(),
     "joe");
-    
+
 insert into recipe_ingredients (recipe_id, ingredient_id, amount, unit, created_on, created_by) values (
-	3, 
-    7, 
-    2, 
+	3,
+    7,
+    2,
     "cl",
-    now(), 
+    now(),
     "joe");
 
 select * from recipe_ingredients;
@@ -191,7 +183,7 @@ CREATE TABLE recipe_ratings(
    recipe_id bigint unsigned,
    rating varchar(255),
    comment varchar(500),
-   
+
    created_on datetime not null,
    updated_on datetime,
    created_by varchar(32) not null,
@@ -206,7 +198,7 @@ CREATE TABLE recipe_ratings(
 CREATE TABLE pantry(
    id serial,
    ingredient_id bigint unsigned,
-   
+
    created_on datetime not null,
    updated_on datetime,
    created_by varchar(32) not null,
