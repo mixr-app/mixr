@@ -1,6 +1,7 @@
 package club.mixr.controller;
 
 import club.mixr.dto.Recipe;
+import club.mixr.dto.RecipeWithIngredients;
 import club.mixr.dto.Source;
 import club.mixr.dto.SourceToCreate;
 import club.mixr.service.RecipeService;
@@ -12,19 +13,26 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/recipes/")
 public class RecipeController {
 
     @Autowired
     RecipeService recipeService;
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @RequestMapping(value = "/recipes", method = RequestMethod.GET)
     public List<Recipe> allRecipes(
             @RequestParam(value = "ids", required = false) List<Long> ids,
             @RequestParam(value = "threshold", defaultValue = "0") int threshold) {
 
         return (ids == null) ? recipeService.allRecipes()
                 : recipeService.findAllRecipesByIngredientIds(ids, threshold);
+    }
+
+    @RequestMapping(value = "/recipesWithIngredients", method = RequestMethod.GET)
+    public List<RecipeWithIngredients> allRecipesWithIngredients(
+            @RequestParam(value = "ids", required = false) List<Long> ids,
+            @RequestParam(value = "threshold", defaultValue = "0") int threshold) {
+
+        return recipeService.allRecipesWithIngredients();
     }
 
 //    @PreAuthorize("isAuthenticated()")

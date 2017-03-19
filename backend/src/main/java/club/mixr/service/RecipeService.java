@@ -6,10 +6,7 @@ import club.mixr.data.entity.SourceEntity;
 import club.mixr.data.repository.RecipeIngredientRepository;
 import club.mixr.data.repository.RecipeRepository;
 import club.mixr.data.repository.SourceRepository;
-import club.mixr.dto.Recipe;
-import club.mixr.dto.RecipeIngredient;
-import club.mixr.dto.Source;
-import club.mixr.dto.SourceToCreate;
+import club.mixr.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -54,6 +51,13 @@ public class RecipeService {
         return recipes
                 .filter(recipe -> badRecipes.getOrDefault((recipe.getId()), 0) <= threshold)
                 .map(RecipeEntity::toRecipe)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public List<RecipeWithIngredients> allRecipesWithIngredients() {
+        return recipeRepository.findAll()
+                .map(RecipeEntity::toRecipeWithIngredients)
                 .collect(Collectors.toList());
     }
 

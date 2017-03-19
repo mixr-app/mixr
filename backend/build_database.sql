@@ -41,7 +41,7 @@ CREATE TABLE ingredients(
    foreign key( updated_by ) references users( username )
 );
 
-insert into ingredients (name, description, type, created_on, created_by) values ("Rum, clear", "Rum that's clear", 'LIQUOR', now(), "joe");
+insert into ingredients (name, description, type, created_on, created_by) values ("Rum (clear)", "Rum that's clear", 'LIQUOR', now(), "joe");
 insert into ingredients (name, description, type, created_on, created_by) values ("Vodka", "Vodka is pretty interchangable", 'LIQUOR', now(), "joe");
 insert into ingredients (name, description, type, created_on, created_by) values ("Tequila", "Need to break this into different types", 'LIQUOR', now(), "joe");
 insert into ingredients (name, description, type, created_on, created_by) values ("Gin", "Tastes like Christmas", 'LIQUOR', now(), "joe");
@@ -182,6 +182,8 @@ insert into recipe_ingredients (recipe_id, ingredient_id, amount, unit, created_
     "cl",
     now(), 
     "joe");
+
+select * from recipe_ingredients;
 
 
 CREATE TABLE recipe_ratings(
