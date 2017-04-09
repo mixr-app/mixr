@@ -2,11 +2,11 @@ package club.mixr.data.entity;
 
 import club.mixr.dto.Recipe;
 import club.mixr.dto.RecipeIngredient;
-import club.mixr.dto.RecipeWithIngredients;
 import club.mixr.dto.Source;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,12 +35,20 @@ public class RecipeEntity extends AuditingEntity {
     @Column(name = "source")
     private Long sourceId;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "recipe_id")
     private List<RecipeIngredientEntity> recipeIngredients;
 
     public RecipeEntity() {
 
+    }
+
+    public RecipeEntity(String name, String description, String instructions, String imageLocation, Long sourceId) {
+        this.name = name;
+        this.description = description;
+        this.instructions = instructions;
+        this.imageLocation = imageLocation;
+        this.sourceId = sourceId;
     }
 
     public Long getId() {
@@ -68,13 +76,26 @@ public class RecipeEntity extends AuditingEntity {
     }
 
     public Recipe toRecipe() {
-        return new Recipe(id, name, description, instructions, imageLocation, sourceId);
-    }
-
-    public RecipeWithIngredients toRecipeWithIngredients() {
-        return new RecipeWithIngredients(
+        return new Recipe(
                 id, name, description, instructions,
                 imageLocation, sourceId,
-                recipeIngredients.stream().map(RecipeIngredientEntity::toRecipeIngredient).collect(Collectors.toList()));
+                recipeIngredients == null ? Collections.emptyList() : recipeIngredients.stream().map(RecipeIngredientEntity::toRecipeIngredient).collect(Collectors.toList()));
+    }
+
+    @Override
+    public String toString() {
+        return "RecipeEntity{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", instructions='" + instructions + '\'' +
+                ", imageLocation='" + imageLocation + '\'' +
+                ", sourceId=" + sourceId +
+                ", recipeIngredients=" + recipeIngredients +
+                '}';
+    }
+
+    public void setRecipeIngredients(List<RecipeIngredientEntity> recipeIngredients) {
+        this.recipeIngredients = recipeIngredients;
     }
 }

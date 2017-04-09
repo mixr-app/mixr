@@ -16,15 +16,22 @@ public class RecipeIngredientEntity extends AuditingEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "recipe_id")
+    @Column(name = "recipe_id", insertable = false, updatable = false)
     private Long recipeId;
 
+    @Column(name = "ingredient_id")
+    private Long ingredientId;
+
     @ManyToOne
-    @JoinColumn(name = "ingredient_id")
+    @JoinColumn(name = "recipe_id")
+    private RecipeEntity recipe;
+
+    @ManyToOne
+    @JoinColumn(name = "ingredient_id", insertable = false, updatable = false)
     private IngredientEntity ingredient;
 
     @Column(name = "amount")
-    private Float amount;
+    private Double amount;
 
     @Column(name = "unit")
     private String unit;
@@ -32,6 +39,13 @@ public class RecipeIngredientEntity extends AuditingEntity {
 
     public RecipeIngredientEntity() {
 
+    }
+
+    public RecipeIngredientEntity(RecipeEntity recipe, Long ingredientId, Double amount, String unit) {
+        this.recipe = recipe;
+        this.ingredientId = ingredientId;
+        this.amount = amount;
+        this.unit = unit;
     }
 
     public Long getId() {
@@ -46,7 +60,7 @@ public class RecipeIngredientEntity extends AuditingEntity {
         return ingredient;
     }
 
-    public Float getAmount() {
+    public Double getAmount() {
         return amount;
     }
 
@@ -55,6 +69,17 @@ public class RecipeIngredientEntity extends AuditingEntity {
     }
 
     public RecipeIngredient toRecipeIngredient() {
-        return new RecipeIngredient(id, recipeId, ingredient.toIngredient(), amount, unit);
+        return new RecipeIngredient(id, recipeId != null ? recipeId : recipe.getId(), ingredientId, amount, unit);
+    }
+
+    @Override
+    public String toString() {
+        return "RecipeIngredientEntity{" +
+                "id=" + id +
+                ", recipeId=" + recipeId +
+                ", ingredientId=" + ingredientId +
+                ", amount=" + amount +
+                ", unit='" + unit + '\'' +
+                '}';
     }
 }

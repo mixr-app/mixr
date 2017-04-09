@@ -15,6 +15,11 @@ interface BaseRepository<T, ID extends Serializable> extends Repository<T, ID> {
     Stream<T> findAll();
      
     Optional<T> findOne(ID id);
- 
-    T save(T persisted);
+
+    T save(T toSave);
+
+    Stream<T> save(Iterable<T> toSave);
+
+    void flush();
+
 }

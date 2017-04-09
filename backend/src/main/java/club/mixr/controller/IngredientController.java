@@ -14,19 +14,19 @@ import java.util.Arrays;
 import java.util.List;
 
 @RestController
-@RequestMapping("/ingredients/")
+@RequestMapping("/ingredients")
 public class IngredientController {
 
     @Autowired
     IngredientService ingredientService;
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @RequestMapping(value = "", method = RequestMethod.GET)
     public List<Ingredient> allIngredients() {
         return ingredientService.allIngredients();
     }
 
     @PreAuthorize("isAuthenticated()")
-    @RequestMapping(value = "/", method = RequestMethod.POST)
+    @RequestMapping(value = "", method = RequestMethod.POST)
     public Ingredient createIngredient(@RequestBody IngredientToCreate ingredientToCreate) {
         return ingredientService.createIngredient(ingredientToCreate);
     }
