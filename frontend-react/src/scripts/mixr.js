@@ -1,5 +1,17 @@
 var Ingredient = React.createClass({
 
+ getInitialState: function () {
+    return {
+      selected: this.props.selected
+    }
+  },
+
+toggle: function(){
+        //TODO tell people about what happened here
+        this.setState({selected: !this.setState.selected})
+
+    },
+
 render: function(){
 
 
@@ -7,16 +19,15 @@ render: function(){
     var name = this.props.name;
     var description = this.props.description;
     var ingredientType = this.props.type; //May not be needed here
-    var selected = this.props.selected;
+    var selected = this.state.selected;
 
     if(selected === "true"){
-    return <tr><h3>{name}<input type="checkbox" checked /> </h3> </tr>
+    return <tr><h3>{name}<input type="checkbox" onClick={this.toggle} checked /> </h3> </tr>
     }else{
-     return  <tr><h3>{name}<input type="checkbox" /> </h3> </tr>
-     }
-
+     return  <tr><h3>{name}<input type="checkbox" onClick={this.toggle} /> </h3> </tr>
+    }
 }
-})
+});
 
 var IngredientCategory = React.createClass({
   render: function () {
@@ -30,17 +41,17 @@ var IngredientCategory = React.createClass({
           name={ingredient.name}
           description={ingredient.description}
           ingredientType={ingredient.ingredientType}
-          checked="false"
+          selected={ingredient.selected} //TODO Is in pantry?
         />
       );
     });
 
-
-//    return<table>{ingredientsObjects}</table>
-<h1>hello</h1>
-  }
-
-})
+    return <div>
+             <h1>{categoryName}</h1>
+             <table>{ingredientsObjects}</table>
+           </div>
+     }
+});
 
 
 /**
@@ -49,7 +60,7 @@ var IngredientCategory = React.createClass({
 (function() {
   "use strict";
 
-  var ingredients = [{"id":"1", "name":"rum", "description":"rum description", "ingredientType":"liquor"},{"id":"2", "name":"vodka", "description":"vodka description", "ingredientType":"liquor"}];
+  var ingredients = [{"id":"1", "name":"rum", "description":"rum description", "ingredientType":"liquor", "selected":"false"},{"id":"2", "name":"vodka", "description":"vodka description", "ingredientType":"liquor", "selected":"true"}];
   ReactDOM.render(<IngredientCategory categoryName="liquor" ingredients={ingredients} />, document.getElementById('root'));
 
 }());
