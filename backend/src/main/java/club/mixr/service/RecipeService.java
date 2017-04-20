@@ -44,12 +44,12 @@ public class RecipeService {
     public List<Recipe> findAllRecipesByIngredientIds(List<Long> ids, int threshold) {
         Stream<RecipeIngredientEntity> recipeIngredients = recipeIngredientRepository.findAll();
 
-        /*
+        /**
          * We count how many times a recipe appears with a missing ingredient
          */
         Map<Long, Integer> badRecipes = recipeIngredients
                 .filter(recipeIngredient -> !ids.contains(recipeIngredient.getIngredient().getId()))
-                .collect(Collectors.toMap(RecipeIngredientEntity::getRecipeId, r -> 1, (a, b) -> a + b));
+                .collect(Collectors.toMap(r -> r.getRecipeId(), r -> 1, (a, b) -> a + b));
 
 
         Stream<RecipeEntity> recipes = recipeRepository.findAllRecipesByIngredientIds(ids);

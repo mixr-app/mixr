@@ -9291,6 +9291,72 @@ var _user$project$Main$navbar = A2(
 			}),
 		_1: {ctor: '[]'}
 	});
+var _user$project$Main$recipeSection = function (recipes) {
+	var _p0 = recipes;
+	if (_p0.ctor === 'AllRecipes') {
+		return A2(
+			_elm_lang$html$Html$div,
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$class('col-sm-9'),
+				_1: {ctor: '[]'}
+			},
+			{
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$h2,
+					{ctor: '[]'},
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html$text('Browse All Recipes'),
+						_1: {ctor: '[]'}
+					}),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$div,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$class('row'),
+							_1: {ctor: '[]'}
+						},
+						A2(_elm_lang$core$List$map, _user$project$Main$recipeToHtml, _p0._0)),
+					_1: {ctor: '[]'}
+				}
+			});
+	} else {
+		return A2(
+			_elm_lang$html$Html$div,
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$class('col-sm-9'),
+				_1: {ctor: '[]'}
+			},
+			{
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$h2,
+					{ctor: '[]'},
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html$text('Filtered Recipes'),
+						_1: {ctor: '[]'}
+					}),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$div,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$class('row'),
+							_1: {ctor: '[]'}
+						},
+						A2(_elm_lang$core$List$map, _user$project$Main$recipeToHtml, _p0._0)),
+					_1: {ctor: '[]'}
+				}
+			});
+	}
+};
 var _user$project$Main$Model = F3(
 	function (a, b, c) {
 		return {ingredients: a, recipes: b, selectedIngredients: c};
@@ -9319,13 +9385,39 @@ var _user$project$Main$decodeRecipes = _elm_lang$core$Json_Decode$list(
 		A2(_elm_lang$core$Json_Decode$field, 'id', _elm_lang$core$Json_Decode$int),
 		A2(_elm_lang$core$Json_Decode$field, 'name', _elm_lang$core$Json_Decode$string),
 		A2(_elm_lang$core$Json_Decode$field, 'ingredients', _user$project$Main$decodeRecipeIngredients)));
-var _user$project$Main$LoadedRecipes = function (a) {
-	return {ctor: 'LoadedRecipes', _0: a};
+var _user$project$Main$FilteredRecipes = function (a) {
+	return {ctor: 'FilteredRecipes', _0: a};
 };
-var _user$project$Main$getRecipes = function () {
+var _user$project$Main$AllRecipes = function (a) {
+	return {ctor: 'AllRecipes', _0: a};
+};
+var _user$project$Main$LoadedFilteredRecipes = function (a) {
+	return {ctor: 'LoadedFilteredRecipes', _0: a};
+};
+var _user$project$Main$getFilteredRecipes = function (ingredients) {
+	var ingredientString = A2(
+		_elm_lang$core$String$join,
+		',',
+		A2(
+			_elm_lang$core$List$map,
+			_elm_lang$core$Basics$toString,
+			_elm_lang$core$Set$toList(ingredients)));
+	var params = A2(
+		_elm_lang$core$Basics_ops['++'],
+		'?ids=',
+		A2(_elm_lang$core$Basics_ops['++'], ingredientString, '&threshold=1'));
+	var url = A2(_elm_lang$core$Basics_ops['++'], 'http://localhost:8080/recipesWithIngredients/', params);
+	var request = A2(_elm_lang$http$Http$get, url, _user$project$Main$decodeRecipes);
+	var debug = A2(_elm_lang$core$Debug$log, 'ingredients', ingredients);
+	return A2(_elm_lang$http$Http$send, _user$project$Main$LoadedFilteredRecipes, request);
+};
+var _user$project$Main$LoadedAllRecipes = function (a) {
+	return {ctor: 'LoadedAllRecipes', _0: a};
+};
+var _user$project$Main$getAllRecipes = function () {
 	var url = 'http://localhost:8080/recipesWithIngredients/';
 	var request = A2(_elm_lang$http$Http$get, url, _user$project$Main$decodeRecipes);
-	return A2(_elm_lang$http$Http$send, _user$project$Main$LoadedRecipes, request);
+	return A2(_elm_lang$http$Http$send, _user$project$Main$LoadedAllRecipes, request);
 }();
 var _user$project$Main$LoadedIngredients = function (a) {
 	return {ctor: 'LoadedIngredients', _0: a};
@@ -9340,58 +9432,84 @@ var _user$project$Main$init = {
 	_0: A3(
 		_user$project$Main$Model,
 		{ctor: '[]'},
-		{ctor: '[]'},
+		_user$project$Main$AllRecipes(
+			{ctor: '[]'}),
 		_elm_lang$core$Set$empty),
 	_1: _user$project$Main$getIngredients
 };
 var _user$project$Main$update = F2(
 	function (msg, model) {
-		var _p0 = msg;
-		switch (_p0.ctor) {
+		var _p1 = msg;
+		switch (_p1.ctor) {
 			case 'RefreshJson':
 				return {ctor: '_Tuple2', _0: model, _1: _user$project$Main$getIngredients};
 			case 'CheckIngredient':
-				if (_p0._0 === true) {
+				if (_p1._0 === true) {
 					var newModel = _elm_lang$core$Native_Utils.update(
 						model,
 						{
-							selectedIngredients: A2(_elm_lang$core$Set$insert, _p0._1, model.selectedIngredients)
+							selectedIngredients: A2(_elm_lang$core$Set$insert, _p1._1, model.selectedIngredients)
 						});
 					var debug1 = A2(_elm_lang$core$Debug$log, 'selected: ', newModel.selectedIngredients);
-					return {ctor: '_Tuple2', _0: newModel, _1: _elm_lang$core$Platform_Cmd$none};
-				} else {
-					var newModel = _elm_lang$core$Native_Utils.update(
-						model,
-						{
-							selectedIngredients: A2(_elm_lang$core$Set$remove, _p0._1, model.selectedIngredients)
-						});
-					var debug1 = A2(_elm_lang$core$Debug$log, 'selected: ', newModel.selectedIngredients);
-					return {ctor: '_Tuple2', _0: newModel, _1: _elm_lang$core$Platform_Cmd$none};
-				}
-			case 'LoadedIngredients':
-				if (_p0._0.ctor === 'Ok') {
 					return {
 						ctor: '_Tuple2',
-						_0: _elm_lang$core$Native_Utils.update(
-							model,
-							{ingredients: _p0._0._0}),
-						_1: _user$project$Main$getRecipes
+						_0: newModel,
+						_1: _user$project$Main$getFilteredRecipes(newModel.selectedIngredients)
 					};
 				} else {
-					var debug = A2(_elm_lang$core$Debug$log, 'error: ', _p0._0._0);
-					return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+					var newModel = _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							selectedIngredients: A2(_elm_lang$core$Set$remove, _p1._1, model.selectedIngredients)
+						});
+					var debug1 = A2(_elm_lang$core$Debug$log, 'selected: ', newModel.selectedIngredients);
+					return {
+						ctor: '_Tuple2',
+						_0: newModel,
+						_1: _user$project$Main$getFilteredRecipes(newModel.selectedIngredients)
+					};
 				}
-			default:
-				if (_p0._0.ctor === 'Ok') {
+			case 'LoadedIngredients':
+				if (_p1._0.ctor === 'Ok') {
 					return {
 						ctor: '_Tuple2',
 						_0: _elm_lang$core$Native_Utils.update(
 							model,
-							{recipes: _p0._0._0}),
+							{ingredients: _p1._0._0}),
+						_1: _user$project$Main$getAllRecipes
+					};
+				} else {
+					var debug = A2(_elm_lang$core$Debug$log, 'error: ', _p1._0._0);
+					return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+				}
+			case 'LoadedAllRecipes':
+				if (_p1._0.ctor === 'Ok') {
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							model,
+							{
+								recipes: _user$project$Main$AllRecipes(_p1._0._0)
+							}),
 						_1: _elm_lang$core$Platform_Cmd$none
 					};
 				} else {
-					var debug = A2(_elm_lang$core$Debug$log, 'error: ', _p0._0._0);
+					var debug = A2(_elm_lang$core$Debug$log, 'error: ', _p1._0._0);
+					return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+				}
+			default:
+				if (_p1._0.ctor === 'Ok') {
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							model,
+							{
+								recipes: _user$project$Main$FilteredRecipes(_p1._0._0)
+							}),
+						_1: _elm_lang$core$Platform_Cmd$none
+					};
+				} else {
+					var debug = A2(_elm_lang$core$Debug$log, 'error: ', _p1._0._0);
 					return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
 				}
 		}
@@ -9544,36 +9662,7 @@ var _user$project$Main$view = function (model) {
 									A2(_elm_lang$core$List$map, _user$project$Main$ingredientToHtml, model.ingredients))),
 							_1: {
 								ctor: '::',
-								_0: A2(
-									_elm_lang$html$Html$div,
-									{
-										ctor: '::',
-										_0: _elm_lang$html$Html_Attributes$class('col-sm-9'),
-										_1: {ctor: '[]'}
-									},
-									{
-										ctor: '::',
-										_0: A2(
-											_elm_lang$html$Html$h2,
-											{ctor: '[]'},
-											{
-												ctor: '::',
-												_0: _elm_lang$html$Html$text('Browse All Recipes'),
-												_1: {ctor: '[]'}
-											}),
-										_1: {
-											ctor: '::',
-											_0: A2(
-												_elm_lang$html$Html$div,
-												{
-													ctor: '::',
-													_0: _elm_lang$html$Html_Attributes$class('row'),
-													_1: {ctor: '[]'}
-												},
-												A2(_elm_lang$core$List$map, _user$project$Main$recipeToHtml, model.recipes)),
-											_1: {ctor: '[]'}
-										}
-									}),
+								_0: _user$project$Main$recipeSection(model.recipes),
 								_1: {ctor: '[]'}
 							}
 						}),
@@ -9587,7 +9676,7 @@ var _user$project$Main$main = _elm_lang$html$Html$program(
 		init: _user$project$Main$init,
 		view: _user$project$Main$view,
 		update: _user$project$Main$update,
-		subscriptions: function (_p1) {
+		subscriptions: function (_p2) {
 			return _elm_lang$core$Platform_Sub$none;
 		}
 	})();
