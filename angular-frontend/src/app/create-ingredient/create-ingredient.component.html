@@ -1,0 +1,26 @@
+<div *ngIf="ingredientNameTaken" class="alert alert-danger" role="alert">
+  <strong>Oh snap!</strong> Looks like there's already an ingredient called {{ingredient.name}}.
+</div>
+<div class="form-group">
+  <label for="name">Ingredient Name</label>
+  <input [(ngModel)]="ingredient.name" (change)="doNameChange()" type="text" class="form-control" id="name">
+</div>
+<div class="form-group">
+  <label for="description">Description</label>
+  <input [(ngModel)]="ingredient.description" type="text" class="form-control" id="description">
+</div>
+<div class="form-group">
+  <label for="name">Ingredient type</label>
+  <select [(ngModel)]="ingredient.ingredientType">
+    <option *ngFor="let type of ingredientTypes" value="{{type.value}}">{{type.name}}</option>
+  </select>
+</div>
+<button (click)="doCreateIngredient()" type="button" class="btn btn-primary">Create Ingredient</button>
+
+<div *ngIf="createdIngredient">
+  <h3>Ingredient created!</h3>
+  <div>{{createdIngredient.id}}</div>
+  <div>{{createdIngredient.name}}</div>
+  <div>{{createdIngredient.description}}</div>
+  <div>{{createdIngredient.ingredientType}}</div>
+</div>

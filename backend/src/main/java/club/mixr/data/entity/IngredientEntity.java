@@ -45,10 +45,11 @@ public class IngredientEntity extends AuditingEntity {
         return ingredientType;
     }
 
-    public IngredientEntity(String name, String description) {
+    public IngredientEntity(String name, String description, IngredientType ingredientType) {
         super();
         this.name = name;
         this.description = description;
+        this.ingredientType = ingredientType;
     }
 
     public Ingredient toIngredient(){

@@ -1,0 +1,12 @@
+<p *ngIf="shouldDisplay">
+  {{title}}
+</p>
+<ul>
+  <li *ngFor="let item of myList">{{item}}</li>
+</ul>
+<div>
+  <input [(ngModel)]="myInput" />
+</div>
+
+<br>
+<button (click)="onClick()" type="button" class="btn btn-primary">Toggle</button>

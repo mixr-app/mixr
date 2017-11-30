@@ -1,0 +1,26 @@
+<div class="row">
+  <div class="col-sm-3">
+    <h2>Ingredients</h2>
+    <div *ngFor="let ingredient of ingredients" class="card">
+      <label class="card-header" for="cbox{{ingredient.id}}">
+        <div class="row">
+          <div class="col-sm-10">{{ingredient.name}}</div>
+          <div class="col-sm-2">
+            <input [checked]="checkedIngredients[ingredient.id]"  (change)="doCheck(ingredient.id)" id="cbox{{ingredient.id}}" type="checkbox">
+          </div>
+        </div>
+      </label>
+    </div>
+  </div>
+  <div class="col-sm-9">
+    <h2>Browse All Recipes</h2>
+    <div class="row">
+      <div *ngFor="let recipe of recipes" class="col-sm-3 card">
+        <div class="card-block">
+          <h4 class="card-title">{{recipe.name}}</h4>
+          <h6 class="card-subtitle mb-2 text-muted"><span *ngFor="let ingredient of recipe.ingredients" >{{ingredientMap[ingredient.ingredientId].name}}, </span></h6>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

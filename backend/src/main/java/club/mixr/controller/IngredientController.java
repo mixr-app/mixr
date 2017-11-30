@@ -28,6 +28,7 @@ public class IngredientController {
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = "", method = RequestMethod.POST)
     public Ingredient createIngredient(@RequestBody IngredientToCreate ingredientToCreate) {
+        System.out.println(ingredientToCreate);
         return ingredientService.createIngredient(ingredientToCreate);
     }
 

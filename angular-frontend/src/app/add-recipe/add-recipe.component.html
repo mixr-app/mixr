@@ -1,0 +1,40 @@
+<div *ngIf="createdRecipe" class="alert alert-success" role="alert">
+  Successfully created
+  <b>{{createdRecipe.name}}</b>
+</div>
+
+<h1>Add New Recipe</h1>
+<div class="form-group">
+  <input class="form-control" [(ngModel)]="recipeToCreate.name" placeholder="Name" />
+</div>
+
+<div class="form-group">
+  <textarea class="form-control" [(ngModel)]="recipeToCreate.description" placeholder="Description"></textarea>
+</div>
+
+<div class="form-group">
+  <textarea class="form-control" [(ngModel)]="recipeToCreate.instructions" placeholder="Instructions"></textarea>
+</div>
+
+<div class="form-group">
+  <input class="form-control" [(ngModel)]="recipeToCreate.imageLocation" placeholder="Image URL" />
+</div>
+
+<div *ngFor="let recipeIngredient of recipeToCreate.ingredients ; index as i" class="row">
+  <select [(ngModel)]="recipeIngredient.ingredientId">
+    <option value="-1">Select Ingredient</option>
+    <option *ngFor="let ingredient of ingredients" value="{{ingredient.id}}">{{ingredient.name}}</option>
+  </select>
+  <input [(ngModel)]="recipeIngredient.amount" placeholder="Amount" />
+  <select [(ngModel)]="recipeIngredient.unit">
+    <option>oz</option>
+    <option>ml</option>
+    <option>cl</option>
+    <option>dash</option>
+    <option>splash</option>
+    <option>sprig</option>
+  </select>
+  <button (click)="doDeleteRow(i)" type="button" class="btn btn-danger">Delete</button>
+</div>
+<button (click)="doAddRow()" type="button" class="btn btn-secondary">Add Row</button>
+<button (click)="doCreateRecipe()" type="button" class="btn btn-primary">Create Recipe</button>

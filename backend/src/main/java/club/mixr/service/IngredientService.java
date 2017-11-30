@@ -26,7 +26,7 @@ public class IngredientService {
     }
 
     public Ingredient createIngredient(IngredientToCreate ingredientToCreate) {
-        IngredientEntity persisted = new IngredientEntity(ingredientToCreate.getName(), ingredientToCreate.getDescription());
+        IngredientEntity persisted = new IngredientEntity(ingredientToCreate.getName(), ingredientToCreate.getDescription(), ingredientToCreate.getIngredientType());
         return ingredientRepository.save(persisted).toIngredient();
     }
 }
